@@ -4,11 +4,10 @@ namespace App\Models;
 
 use Illuminate\Database\Eloquent\Concerns\HasUuids;
 use Illuminate\Database\Eloquent\Model;
-use Illuminate\Database\Eloquent\SoftDeletes;
 
-class Student extends Model
+class StudentResponsible extends Model
 {
-    use HasUuids, SoftDeletes;
+    use HasUuids;
 
     /**
      * The primary key for the model.
@@ -29,15 +28,14 @@ class Student extends Model
         'gender',
         'birth_date',
         'phone_number',
-        'enrollment_date',
     ];
-    
+
     /**
-     * Get the responsibles for this student.
+     * Get the students related to this responsible. 
      */
-    public function responsibles()
+    public function students()
     {
-        return $this->belongsToMany(StudentResponsible::class, foreignPivotKey: 'student_uuid', relatedPivotKey: 'student_responsible_uuid')
+        return $this->belongsToMany(Student::class, foreignPivotKey: 'student_responsible_uuid', relatedPivotKey: 'student_uuid')
                     ->withPivot('filiation');
     }
 }
